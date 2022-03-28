@@ -1,0 +1,28 @@
+	class SavingsAccount (initialBalance: Double) extends BankAccount(initialBalance) {
+		private var transactionCount = 0
+		private val freeTransactionsCount = 3
+		override def deposit(amount: Double): Double = {
+			if (transactionCount > freeTransactionsCount) {
+				super.deposit(amount - 1)
+			}
+			else {
+				super.deposit(amount)
+			}
+			transactionCount += 1
+			currentBalance
+		}
+		override def withdraw(amount: Double): Double = {
+			if (transactionCount > freeTransactionsCount) {
+				super.withdraw(amount + 1)
+			}
+			else {
+				super.withdraw(amount)
+			}
+			transactionCount += 1
+			currentBalance
+		}
+		def earnMonthlyInterest(): Double = {
+			transactionCount = 0
+			super.deposit(currentBalance * 0.3)
+		}
+	}
