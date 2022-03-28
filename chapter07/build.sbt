@@ -3,7 +3,7 @@ val scala3Version = "3.1.1"
 lazy val root = project
   .in(file("."))
   .settings(
-    name := "chapter06",
+    name := "chapter07",
     version := "0.1.0-SNAPSHOT",
 
     scalaVersion := scala3Version,
