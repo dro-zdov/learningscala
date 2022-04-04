@@ -15,16 +15,12 @@ object Main extends App {
   //ний каждого слова.
   {
     val in = new java.util.Scanner(getClass.getResource("words.txt").openStream())
-    val wordsCount = mutable.Map[String, Int]()
+    val wordsCount = mutable.Map[String, Int]().withDefaultValue(0)
     while (in.hasNext) {
       val key = in.next
-      if (wordsCount.contains(key)) {
-        wordsCount(key) = wordsCount(key) + 1
-      }
-      else {
-        wordsCount(key) = 1
-      }
+      wordsCount(key) += 1
     }
+    in.close()
     println(s"wordsCount = ${wordsCount.mkString(", ")}")
   }
 
@@ -32,16 +28,12 @@ object Main extends App {
   // ассоциативный массив.
   {
     val in = new java.util.Scanner(getClass.getResource("words.txt").openStream())
-    var wordsCount = immutable.Map[String, Int]()
+    var wordsCount = immutable.Map[String, Int]().withDefaultValue(0)
     while (in.hasNext) {
       val key = in.next
-      if (wordsCount.contains(key)) {
-        wordsCount ++= immutable.Map(key -> (wordsCount(key) + 1))
-      }
-      else {
-        wordsCount ++= immutable.Map(key -> 1)
-      }
+      wordsCount += (key -> (wordsCount(key) + 1))
     }
+    in.close()
     println(s"wordsCount = ${wordsCount.mkString(", ")}")
   }
 
@@ -50,16 +42,12 @@ object Main extends App {
   //порядке.
   {
     val in = new java.util.Scanner(getClass.getResource("words.txt").openStream())
-    val wordsCount = mutable.TreeMap[String, Int]()
+    val wordsCount = mutable.TreeMap[String, Int]().withDefaultValue(0)
     while (in.hasNext) {
       val key = in.next
-      if (wordsCount.contains(key)) {
-        wordsCount(key) = wordsCount(key) + 1
-      }
-      else {
-        wordsCount(key) = 1
-      }
+      wordsCount(key) += 1
     }
+    in.close()
     println(s"wordsCount sorted = ${wordsCount.mkString(", ")}")
   }
 
@@ -67,17 +55,13 @@ object Main extends App {
   //адаптировав его для работы со Scala API.
   {
     val in = new java.util.Scanner(getClass.getResource("words.txt").openStream())
-    import scala.jdk.CollectionConverters._
-    val wordsCount = new java.util.TreeMap[String, Int]().asScala
+    import scala.jdk.CollectionConverters.MapHasAsScala
+    val wordsCount = new java.util.TreeMap[String, Int]().asScala.withDefaultValue(0)
     while (in.hasNext) {
       val key = in.next
-      if (wordsCount.contains(key)) {
-        wordsCount(key) = wordsCount(key) + 1
-      }
-      else {
-        wordsCount(key) = 1
-      }
+      wordsCount(key) += 1
     }
+    in.close()
     println(s"wordsCount sorted java = ${wordsCount.mkString(", ")}")
   }
 
@@ -100,7 +84,7 @@ object Main extends App {
 
   //7. Выведите таблицу всех Java-свойств
   {
-    import scala.jdk.CollectionConverters._
+    import scala.jdk.CollectionConverters.MapHasAsScala
     val props = System.getenv.asScala
     val maxK = props.keySet.max.length
     for ((k, v) <- props) println(k + " " * (maxK - k.length) + " | " + v)
